@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8051412018902129879}
   - component: {fileID: 7460166481424796217}
   - component: {fileID: 3408180606406374766}
+  - component: {fileID: 6642763899722950312}
   m_Layer: 5
   m_Name: UI_OtherChatItem
   m_TagString: Untagged
@@ -38,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 390, y: -62.93}
-  m_SizeDelta: {x: 780, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5197192184509024370
 CanvasRenderer:
@@ -118,6 +119,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &6642763899722950312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154044786642397351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54644d2b479ef1c438c18c823422bc86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_ChatItem
+  MessageItemPrefab: {fileID: 5107489511417304428, guid: d926985f7114d7c41bd750a796e33cc1, type: 3}
+  MessageRoot: {fileID: 8028212077399583207}
 --- !u!1 &2152114862244056008
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,11 +568,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4256955560126584850, guid: d926985f7114d7c41bd750a796e33cc1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5107489511417304428, guid: d926985f7114d7c41bd750a796e33cc1, type: 3}
       propertyPath: m_Name
-      value: MessageItem
+      value: UI_OtherMessageItem
       objectReference: {fileID: 0}
     - target: {fileID: 6699816914624214327, guid: d926985f7114d7c41bd750a796e33cc1, type: 3}
       propertyPath: m_text
@@ -603,10 +618,55 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5107489511417304428, guid: d926985f7114d7c41bd750a796e33cc1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2570381869829775853}
   m_SourcePrefab: {fileID: 100100000, guid: d926985f7114d7c41bd750a796e33cc1, type: 3}
 --- !u!224 &3443686062400220986 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4107256735956545188, guid: d926985f7114d7c41bd750a796e33cc1, type: 3}
   m_PrefabInstance: {fileID: 1672390201517867422}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5462587053105837225 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6699816914624214327, guid: d926985f7114d7c41bd750a796e33cc1, type: 3}
+  m_PrefabInstance: {fileID: 1672390201517867422}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &5896606786229556466 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5107489511417304428, guid: d926985f7114d7c41bd750a796e33cc1, type: 3}
+  m_PrefabInstance: {fileID: 1672390201517867422}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2570381869829775853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5896606786229556466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a93d97fceee829848a655b31fd666989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChatItem
+  _nameText: {fileID: 7327599203631672120}
+  _messageText: {fileID: 5462587053105837225}
+  _timeText: {fileID: 6139367424130922250}
+--- !u!114 &6139367424130922250 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4757749695520749204, guid: d926985f7114d7c41bd750a796e33cc1, type: 3}
+  m_PrefabInstance: {fileID: 1672390201517867422}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
