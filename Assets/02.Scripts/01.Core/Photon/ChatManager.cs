@@ -14,9 +14,13 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     private const string CHANNEL_SKKU = "skku2";
     private const string CHANNEL_NOTICE = "notice";
     private const string NICKNAME = "성훈";
+    private const int MESSAGE_FROM_HISTORY = 20;
     private ChatClient _client;
 
     private List<ChatMessage> _messages = new List<ChatMessage>();
+    
+    public int ChannelSubscribersCount { get; private set; }
+    public static event Action OnSubscribersChanged; //새로운 메시지가 등록됨
     public static event Action<ChatMessage> OnNewMessage; //새로운 메시지가 등록됨
     
     private void Awake()
@@ -52,8 +56,9 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public void OnConnected()
     {
         Debug.Log($"[Photon Chat] : 서버와 연결됨");
-
-        _client.Subscribe(new String[]{CHANNEL_SKKU, CHANNEL_NOTICE});
+        var channelOption = new ChannelCreationOptions { PublishSubscribers = true };
+        
+        _client.Subscribe(CHANNEL_SKKU,0,MESSAGE_FROM_HISTORY,channelOption);
     }
 
     public void OnChatStateChange(ChatState state)
@@ -72,14 +77,10 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         for (int i = 0; i < channels.Length; i++)
         {
             string result = results[i] ? "성공" : "실패";
-
-            Debug.Log($"[Photon Chat] : 채널 {channels[i]} 구독 {result}");
+            RefreshSubscribersCount(channels[i]);
+            Debug.Log($"[Photon Chat] : 채널 {channels[i]} 구독 {result}, 구독자수 : {ChannelSubscribersCount}");
         }
-
-        foreach (var channel in _client.PublicChannels)
-        {
-            //여기서 내가 구독중인 채널 목록 확인 가능
-        }
+        
     }
 
     public void OnUnsubscribed(string[] channels)
@@ -95,12 +96,15 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     {
         Debug.Log($"[Photon Chat] : {channel}에 {user} 입장");
         OnNewMessage?.Invoke(ChatMessage.CreateSystem("system",$"{user}님이 입장하셨습니다."));
+        RefreshSubscribersCount(channel);
     }
-
+    
     public void OnUserUnsubscribed(string channel, string user)
     {
         Debug.Log($"[Photon Chat] : {channel}에 {user} 퇴장");
         OnNewMessage?.Invoke(ChatMessage.CreateSystem("system",$"{user}님이 퇴장하셨습니다."));
+        RefreshSubscribersCount(channel);
+        
     }
     
     //친구 혹은 팔로우 리스트 등 특정 유저의 상태 변경시
@@ -119,6 +123,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
             Debug.Log($"[Photon Chat] : [{channelName}] {senders[i]}: {messages[i]}");
             if (senders[i] == NICKNAME)
             {
+                //보낸자가 나라면 내 채팅프리팹을 아니라면 다른사람의 프리팹을
                 OnNewMessage?.Invoke(ChatMessage.CreateMine(senders[i], messages[i].ToString()));
             }
             else
@@ -161,8 +166,15 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     {
         if (_client == null) return;
         if (_client.CanChat == false) return;
-
+        
         _client.PublishMessage(CHANNEL_SKKU,message);
     }
     
+    private void RefreshSubscribersCount(string channelName)
+    {
+        _client.TryGetChannel(channelName, false, out ChatChannel chatChannel);
+        ChannelSubscribersCount = chatChannel.Subscribers.Count;
+        
+        OnSubscribersChanged?.Invoke();
+    }
 }

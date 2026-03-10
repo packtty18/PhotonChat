@@ -1,27 +1,24 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class UI_ChatItem : MonoBehaviour
 {
-    [SerializeField] private GameObject MessageItemPrefab;
-    [SerializeField] private Transform MessageRoot;
-    
-    private string _sender;
+    [SerializeField] private GameObject _messageItemPrefab;
 
-    public bool IsSameSender(string sender)
+    [SerializeField] private TextMeshProUGUI _nameText;
+    [SerializeField] private Transform _messageRoot;
+    
+    public void AddMessage(ChatMessage message)
     {
-        return string.Equals(_sender, sender);
+        if (_nameText != null 
+            && !string.IsNullOrEmpty(message.Sender)
+            && !string.Equals(message.Sender, _nameText.text))
+        {
+            _nameText.text = message.Sender;
+        }
+        
+        UI_MessageItem messageItem = Instantiate(_messageItemPrefab, _messageRoot).GetComponent<UI_MessageItem>();
+        messageItem.SetMessage(message);
     }
-    
-    public void SetSender(string sender)
-    {
-        _sender = sender;
-    }
-    
-    public UI_MessageItem InstantiateMessageItem()
-    {
-        GameObject messageItem = Instantiate(MessageItemPrefab, MessageRoot);
-        return messageItem.GetComponent<UI_MessageItem>();
-    }
-    
-    
 }
